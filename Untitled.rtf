@@ -1,0 +1,248 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2708
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red49\green49\blue49;\red0\green0\blue255;\red255\green255\blue254;
+\red25\green25\blue25;\red101\green76\blue29;\red0\green0\blue0;\red19\green120\blue72;\red144\green1\blue18;
+}
+{\*\expandedcolortbl;;\cssrgb\c25098\c25098\c25098;\cssrgb\c0\c0\c100000;\cssrgb\c100000\c100000\c99608;
+\cssrgb\c12941\c12941\c12941;\cssrgb\c47451\c36863\c14902;\cssrgb\c0\c0\c0;\cssrgb\c3529\c53333\c35294;\cssrgb\c63922\c8235\c8235;
+}
+\margl1440\margr1440\vieww5960\viewh5960\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 8weeks SQL Challenge\
+1. 
+\f1\fs36 \cf2 \expnd0\expndtw0\kerning0
+What is the total amount each customer spent at the restaurant?\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf3 \cb4 \outl0\strokewidth0 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+ \cb4 customer_id,\cb1 \
+ \cf6 \cb4 \strokec6 SUM\cf5 \strokec5 (price) \cf3 \strokec3 as\cf5 \strokec5  TotalSpent\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb4  \cf3 \strokec3 FROM\cf5 \strokec5  \cb1 \
+\cb4  dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb4  dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M \cf3 \strokec3 on\cf5 \strokec5  S.product_id \strokec7 =\strokec5  M.product_id\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \cb4 \strokec3 GROUP BY\cf5 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb4  customer_id\cb1 \
+\
+ 2. 
+\f1\fs36 \cf2 \outl0\strokewidth0 How many days has each customer visited the restaurant?\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf3 \cb4 \outl0\strokewidth0 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb4 customer_id,\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb4 \strokec6 COUNT\cf5 \strokec5 ( \cf3 \strokec3 DISTINCT\cf5 \strokec5  order_date) \cf3 \strokec3 as\cf5 \strokec5  days_visited\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb4  \cf3 \strokec3 FROM\cf5 \strokec5  \cb1 \
+\cb4 dbo.sales\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \cb4 \strokec3 GROUP BY\cf5 \strokec5  \cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb4 customer_id\cb1 \
+\
+3. 
+\f1\fs36 \cf2 \outl0\strokewidth0 What was the first item from the menu purchased by each customer?\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf3 \cb4 \outl0\strokewidth0 \strokec3 WITH\cf5 \strokec5  CTE \cf3 \strokec3 as\cf5 \strokec5  (\cb1 \
+\cf3 \cb4 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb4 customer_id,\cb1 \
+\cb4 product_name,order_date,\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf6 \cb4 \strokec6 RANK\cf5 \strokec5 () \cf3 \strokec3 OVER\cf5 \strokec5 (\cf3 \strokec3 PARTITION\cf5 \strokec5  \cf3 \strokec3 BY\cf5 \strokec5  customer_id \cf3 \strokec3 ORDER BY\cf5 \strokec5  order_date) \cf3 \strokec3 as\cf5 \strokec5  rank\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \cb4 \strokec3 FROM\cf5 \strokec5  dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S \cf3 \strokec3 ON\cf5 \strokec5  M.product_id \strokec7 =\strokec5  S.product_id\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb4 )\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \cb4 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb4 customer_id, product_name\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \cb4 \strokec3 FROM\cf5 \strokec5  CTE\cb1 \
+\cf3 \cb4 \strokec3 WHERE\cf5 \strokec5  rank\strokec7 =\cf8 \cb4 \strokec8 1\cf5 \cb1 \strokec5 \
+\
+4. 
+\f1\fs36 \cf2 \outl0\strokewidth0 What is the most purchased item on the menu and how many times was it purchased by all customers?\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf3 \cb4 \outl0\strokewidth0 \strokec3 SELECT\cf5 \strokec5  \cf3 \strokec3 TOP\cf5 \strokec5  \cf8 \cb4 \strokec8 1\cf5 \cb1 \strokec5 \
+\cb4 product_name,\cb1 \
+\cf6 \cb4 \strokec6 COUNT\cf5 \strokec5 (order_date) \cf3 \strokec3 as\cf5 \strokec5  orders\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \cb1 \strokec5 \
+\cb4     dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S\cb1 \
+\cf3 \cb4 \strokec3  \cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 GROUP BY\cf5 \strokec5  product_name\cb1 \
+\cf3 \cb4 \strokec3 order by\cf5 \strokec5  \cf6 \strokec6 COUNT\cf5 \strokec5 (order_date) \cf3 \strokec3 DESC\cf5 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \
+\
+5. 
+\f1\fs36 \cf2 \outl0\strokewidth0 Which item was the most popular for each customer?\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf3 \cb4 \outl0\strokewidth0 \strokec3 WITH\cf5 \strokec5  CTE \cf3 \strokec3 as\cf5 \strokec5  (\cb1 \
+\cf3 \cb4 \strokec3 SELECT\cf5 \strokec5  \cb1 \
+\cb4    product_name,customer_id,\cb1 \
+\cb4    \cf6 \strokec6 COUNT\cf5 \strokec5 (order_date) \cf3 \strokec3 as\cf5 \strokec5  orders,\cb1 \
+\cb4    \cf6 \strokec6 ROW_NUMBER\cf5 \strokec5 () \cf3 \strokec3 OVER\cf5 \strokec5 (\cf3 \strokec3 PARTITION\cf5 \strokec5  \cf3 \strokec3 BY\cf5 \strokec5  customer_id \cf3 \strokec3 ORDER BY\cf5 \strokec5  \cf6 \strokec6 COUNT\cf5 \strokec5 (order_date)\cf3 \strokec3 DESC\cf5 \strokec5 ) \cf3 \strokec3 as\cf5 \strokec5  rank\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \cb1 \strokec5 \
+\cb4     dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M \cf3 \strokec3 on\cf5 \strokec5  S.product_id \strokec7 =\strokec5  M.product_id\cb1 \
+\cf3 \cb4 \strokec3 Group by\cf5 \strokec5  customer_id , product_name\cb1 \
+\cb4 )\cb1 \
+\cf3 \cb4 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\cb4 customer_id,\cb1 \
+\cb4 product_name\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \strokec5  CTE\cb1 \
+\cf3 \cb4 \strokec3 where\cf5 \strokec5  rank \strokec7 =\strokec5  \cf8 \cb4 \strokec8 1\cf5 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs36 \cf2 \outl0\strokewidth0 \
+6. Which item was purchased first by the customer after they became a member?\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf3 \cb4 \outl0\strokewidth0 \strokec3 WITH\cf5 \strokec5  \cb1 \
+\cb4   CTE \cf3 \strokec3 AS\cf5 \strokec5  (\cb1 \
+\cb4     \cf3 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\cb4      s.customer_id,product_name,join_date,order_date,\cb1 \
+\cb4      \cf6 \strokec6 ROW_NUMBER\cf5 \strokec5 () \cf3 \strokec3 OVER\cf5 \strokec5 (\cf3 \strokec3 PARTITION\cf5 \strokec5  \cf3 \strokec3 BY\cf5 \strokec5  s.customer_id \cf3 \strokec3 ORDER BY\cf5 \strokec5  order_date ) \cf3 \strokec3 as\cf5 \strokec5  rank\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \cb1 \strokec5 \
+\cb4     dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.members \cf3 \strokec3 as\cf5 \strokec5  MEM  \cf3 \strokec3 on\cf5 \strokec5  MEM.customer_id \strokec7 =\strokec5  S.customer_id\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M \cf3 \strokec3 on\cf5 \strokec5  S.product_id \strokec7 =\strokec5  M.product_id\cb1 \
+\cf3 \cb4 \strokec3 WHERE\cf5 \strokec5  order_date \strokec7 >=\strokec5  join_date\cb1 \
+\cb4   )\cb1 \
+\cb4   \cf3 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\cb4    customer_id,product_name\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \strokec5  \cb1 \
+\cb4   CTE\cb1 \
+\cf3 \cb4 \strokec3 where\cf5 \strokec5  rank \strokec7 =\strokec5  \cf8 \cb4 \strokec8 1\cf5 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs36 \cf2 \outl0\strokewidth0 \
+7. Which item was purchased just before the customer became a member?\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf3 \cb4 \outl0\strokewidth0 \strokec3 WITH\cf5 \strokec5  \cb1 \
+\cb4   CTE \cf3 \strokec3 AS\cf5 \strokec5  (\cb1 \
+\cb4     \cf3 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\cb4      s.customer_id,product_name,join_date,order_date,\cb1 \
+\cb4      \cf6 \strokec6 RANK\cf5 \strokec5 () \cf3 \strokec3 OVER\cf5 \strokec5 (\cf3 \strokec3 PARTITION\cf5 \strokec5  \cf3 \strokec3 BY\cf5 \strokec5  s.customer_id \cf3 \strokec3 ORDER BY\cf5 \strokec5  order_date \cf3 \strokec3 DESC\cf5 \strokec5  ) \cf3 \strokec3 as\cf5 \strokec5  rank\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \cb1 \strokec5 \
+\cb4     dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.members \cf3 \strokec3 as\cf5 \strokec5  MEM  \cf3 \strokec3 on\cf5 \strokec5  MEM.customer_id \strokec7 =\strokec5  S.customer_id\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M \cf3 \strokec3 on\cf5 \strokec5  S.product_id \strokec7 =\strokec5  M.product_id\cb1 \
+\cf3 \cb4 \strokec3 WHERE\cf5 \strokec5  order_date \strokec7 <\strokec5  join_date\cb1 \
+\cb4   )\cb1 \
+\cb4   \cf3 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\cb4    customer_id,product_name\cb1 \
+\cb4    \cf3 \strokec3 FROM\cf5 \strokec5  \cb1 \
+\cb4   CTE\cb1 \
+\cb4   \cf3 \strokec3 WHERE\cf5 \strokec5  rank \strokec7 =\cf8 \cb4 \strokec8 1\cf5 \cb4 \strokec5  \cb1 \
+\cb4  \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs36 \cf2 \outl0\strokewidth0 \
+8.  What is the total items and amount spent for each member before they became a member?\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf5 \cb4 \outl0\strokewidth0 \strokec5   \cf3 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\cb4      s.customer_id,\cf6 \strokec6 COUNT\cf5 \strokec5 (product_name) \cf3 \strokec3 AS\cf5 \strokec5  TotalItem,\cf6 \strokec6 SUM\cf5 \strokec5 (price) \cf3 \strokec3 as\cf5 \strokec5  TotalPrice\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \cb1 \strokec5 \
+\cb4     dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.members \cf3 \strokec3 as\cf5 \strokec5  MEM  \cf3 \strokec3 on\cf5 \strokec5  MEM.customer_id \strokec7 =\strokec5  S.customer_id\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M \cf3 \strokec3 on\cf5 \strokec5  S.product_id \strokec7 =\strokec5  M.product_id\cb1 \
+\cf3 \cb4 \strokec3 WHERE\cf5 \strokec5  order_date \strokec7 <\strokec5  join_date\cb1 \
+\cf3 \cb4 \strokec3 GROUP BY\cf5 \strokec5  s.customer_id\cb1 \
+\
+\cb4  \cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs36 \cf2 \outl0\strokewidth0 9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf5 \cb4 \outl0\strokewidth0 \strokec5  \cf3 \strokec3 SELECT\cf5 \cb1 \strokec5 \
+\cb4 customer_id,\cf6 \strokec6 SUM\cf5 \strokec5 (\cb1 \
+\cf3 \cb4 \strokec3 CASE\cf5 \strokec5  \cf3 \strokec3 WHEN\cf5 \strokec5  product_name \strokec7 =\strokec5  \cf9 \cb4 \strokec9 'sushi'\cf5 \cb4 \strokec5  \cf3 \strokec3 THEN\cf5 \strokec5  price \strokec7 *\strokec5  \cf8 \cb4 \strokec8 10\cf5 \cb4 \strokec5  \strokec7 *\strokec5  \cf8 \cb4 \strokec8 2\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 ELSE\cf5 \strokec5  price  \strokec7 *\strokec5  \cf8 \cb4 \strokec8 10\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 END\cf5 \strokec5 ) \cf3 \strokec3 as\cf5 \strokec5  points\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \cb1 \strokec5 \
+\cb4     dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S \cf3 \strokec3 on\cf5 \strokec5  S.product_id \strokec7 =\strokec5  M.product_id\cb1 \
+\cf3 \cb4 \strokec3 GROUP BY\cf5 \strokec5  customer_id \cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs36 \cf2 \outl0\strokewidth0 \
+10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf5 \outl0\strokewidth0 \strokec5 \
+\cb4  \cf3 \strokec3 SELECT\cf5 \strokec5  s.customer_id,\cb1 \
+\cf6 \cb4 \strokec6 SUM\cf5 \strokec5 (\cf3 \strokec3 CASE\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 WHEN\cf5 \strokec5  order_date \cf3 \strokec3 BETWEEN\cf5 \strokec5  MEM.join_date \cf3 \strokec3 AND\cf5 \strokec5  \cf6 \strokec6 DATEADD\cf5 \strokec5 (\cf3 \strokec3 DAY\cf5 \strokec5 ,\cf8 \cb4 \strokec8 6\cf5 \cb4 \strokec5 ,MEM.join_date ) \cf3 \strokec3 THEN\cf5 \strokec5   price \strokec7 *\strokec5  \cf8 \cb4 \strokec8 10\cf5 \cb4 \strokec5  \strokec7 *\strokec5  \cf8 \cb4 \strokec8 2\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 WHEN\cf5 \strokec5  product_name \strokec7 =\strokec5  \cf9 \cb4 \strokec9 'sushi'\cf5 \cb4 \strokec5  \cf3 \strokec3 THEN\cf5 \strokec5  price \strokec7 *\strokec5  \cf8 \cb4 \strokec8 10\cf5 \cb4 \strokec5  \strokec7 *\strokec5  \cf8 \cb4 \strokec8 2\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 ELSE\cf5 \strokec5  price  \strokec7 *\strokec5  \cf8 \cb4 \strokec8 10\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 END\cf5 \strokec5 )\cf3 \strokec3 as\cf5 \strokec5  points\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \cb1 \strokec5 \
+\cb4     dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S \cf3 \strokec3 on\cf5 \strokec5  S.product_id \strokec7 =\strokec5  M.product_id\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.members \cf3 \strokec3 as\cf5 \strokec5  MEM \cf3 \strokec3 on\cf5 \strokec5  S.customer_id \strokec7 =\strokec5  MEM.customer_id\cb1 \
+\cf3 \cb4 \strokec3 WHERE\cf5 \strokec5  \cf6 \strokec6 DATETRUNC\cf5 \strokec5 (\cf3 \strokec3 MONTH\cf5 \strokec5 ,order_date) \strokec7 =\strokec5  \cf9 \cb4 \strokec9 '2021-01-01'\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 GROUP BY\cf5 \strokec5  s.customer_id\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs36 \cf2 \outl0\strokewidth0 \
+\'97BONUS\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs24 \cf3 \cb4 \outl0\strokewidth0 \strokec3 SELECT\cf5 \strokec5  s.customer_id,order_date,product_name,price,\cb1 \
+\cf3 \cb4 \strokec3 CASE\cf5 \strokec5  \cb1 \
+\cf3 \cb4 \strokec3 WHEN\cf5 \strokec5  join_date \cf3 \strokec3 is\cf5 \strokec5  \cf3 \strokec3 NULL\cf5 \strokec5  \cf3 \strokec3 THEN\cf5 \strokec5  \cf9 \cb4 \strokec9 'N'\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 WHEN\cf5 \strokec5  order_date \strokec7 <\strokec5  join_date \cf3 \strokec3 THEN\cf5 \strokec5  \cf9 \cb4 \strokec9 'N'\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 ELSE\cf5 \strokec5  \cf9 \cb4 \strokec9 'Y'\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 END\cf5 \strokec5  \cf3 \strokec3 as\cf5 \strokec5  Member\cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \strokec5  dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M \cf3 \strokec3 on\cf5 \strokec5  s.product_id \strokec7 =\strokec5  m.product_id\cb1 \
+\cf3 \cb4 \strokec3 LEFT JOIN\cf5 \strokec5  dbo.members \cf3 \strokec3 as\cf5 \strokec5  MEM \cf3 \strokec3 on\cf5 \strokec5  S.customer_id \strokec7 =\strokec5  MEM.customer_id\cb1 \
+\cf3 \cb4 \strokec3 ORDER BY\cf5 \strokec5  s.customer_id,order_date,price \cf3 \strokec3 DESC\cf5 \cb1 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs36 \cf2 \outl0\strokewidth0 \
+2.  
+\f2\fs24 \cf5 \outl0\strokewidth0 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \cb4 \strokec3 SELECT\cf5 \strokec5  s.customer_id,order_date,product_name,price,\cb1 \
+\cf3 \cb4 \strokec3 CASE\cf5 \strokec5  \cb1 \
+\cf3 \cb4 \strokec3 WHEN\cf5 \strokec5  join_date \cf3 \strokec3 is\cf5 \strokec5  \cf3 \strokec3 NULL\cf5 \strokec5  \cf3 \strokec3 THEN\cf5 \strokec5  \cf9 \cb4 \strokec9 'N'\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 WHEN\cf5 \strokec5  order_date \strokec7 <\strokec5  join_date \cf3 \strokec3 THEN\cf5 \strokec5  \cf9 \cb4 \strokec9 'N'\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 ELSE\cf5 \strokec5  \cf9 \cb4 \strokec9 'Y'\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 END\cf5 \strokec5  \cf3 \strokec3 as\cf5 \strokec5  Member,\cb1 \
+\cf3 \cb4 \strokec3 CASE\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 WHEN\cf5 \strokec5  join_date \cf3 \strokec3 is\cf5 \strokec5  \cf3 \strokec3 NULL\cf5 \strokec5  \cf3 \strokec3 THEN\cf5 \strokec5  \cf3 \strokec3 NULL\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 WHEN\cf5 \strokec5  order_date \strokec7 <\strokec5  join_date \cf3 \strokec3 THEN\cf5 \strokec5  \cf3 \strokec3 NULL\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 ELSE\cf5 \strokec5  \cf6 \strokec6 RANK\cf5 \strokec5 () \cf3 \strokec3 OVER\cf5 \strokec5 (\cf3 \strokec3 PARTITION\cf5 \strokec5  \cf3 \strokec3 BY\cf5 \strokec5  s.customer_id,\cf3 \strokec3 CASE\cf5 \strokec5  \cf3 \strokec3 WHEN\cf5 \strokec5  join_date \cf3 \strokec3 is\cf5 \strokec5  \cf3 \strokec3 NULL\cf5 \strokec5  \cf3 \strokec3 THEN\cf5 \strokec5  \cf9 \cb4 \strokec9 'N'\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 WHEN\cf5 \strokec5  order_date \strokec7 <\strokec5  join_date \cf3 \strokec3 THEN\cf5 \strokec5  \cf9 \cb4 \strokec9 'N'\cf5 \cb1 \strokec5 \
+\cf3 \cb4 \strokec3 ELSE\cf5 \strokec5  \cf9 \cb4 \strokec9 'Y'\cf5 \cb4 \strokec5  \cf3 \strokec3 END\cf5 \strokec5   \cf3 \strokec3 ORDER BY\cf5 \strokec5  order_date) \cb1 \
+\cf3 \cb4 \strokec3 END\cf5 \strokec5  \cf3 \strokec3 as\cf5 \strokec5  rank \cb1 \
+\cf3 \cb4 \strokec3 FROM\cf5 \strokec5  dbo.sales \cf3 \strokec3 as\cf5 \strokec5  S\cb1 \
+\cf3 \cb4 \strokec3 INNER JOIN\cf5 \strokec5  dbo.menu \cf3 \strokec3 as\cf5 \strokec5  M \cf3 \strokec3 on\cf5 \strokec5  s.product_id \strokec7 =\strokec5  m.product_id\cb1 \
+\cf3 \cb4 \strokec3 LEFT JOIN\cf5 \strokec5  dbo.members \cf3 \strokec3 as\cf5 \strokec5  MEM \cf3 \strokec3 on\cf5 \strokec5  S.customer_id \strokec7 =\strokec5  MEM.customer_id\cb1 \
+\cf3 \cb4 \strokec3 ORDER BY\cf5 \strokec5  s.customer_id,order_date,price \cf3 \strokec3 DESC
+\f1\fs36 \cf2 \cb1 \outl0\strokewidth0 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \
+}
